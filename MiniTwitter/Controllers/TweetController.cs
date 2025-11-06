@@ -24,4 +24,4 @@ namespace MiniTwitter.Controllers
 }
 
 
-//https://www.youtube.com/watch?v=QtiM87MV27w
+// tutorial: https://www.youtube.com/watch?v=QtiM87MV27w
