@@ -1,0 +1,26 @@
+# Build folders
+bin/
+obj/
+
+# User-specific files
+.vscode/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Secrets
+appsettings.Development.json
+appsettings.*.json
+
+# Packages
+*.nupkg
+*.snupkg
+
+# Publish outputs
+wwwroot/lib/
+
+# OS files
+.DS_Store
+Thumbs.db

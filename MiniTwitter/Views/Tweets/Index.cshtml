@@ -1,0 +1,24 @@
+﻿@model IEnumerable<MiniTwitter.Models.Tweet>
+
+<h2>All Tweets</h2>
+<div class=tweet-container>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Content</th>
+                <th>Created At</th>
+                <th>User</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tweet in Model)
+            {
+                <tr>
+                    <td>@tweet.Content</td>
+                    <td>@tweet.CreatedAt.ToString()</td>
+                    <td>@tweet.UserId.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
