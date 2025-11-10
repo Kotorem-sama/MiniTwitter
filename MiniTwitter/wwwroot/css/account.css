@@ -1,0 +1,18 @@
+.account-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 0;
+    background: #1E2748;
+    background: linear-gradient(343deg,rgba(30, 39, 72, 1) 0%, rgba(172, 116, 181, 1) 100%);
+}
+
+.account-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    opacity: .9;
+}
