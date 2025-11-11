@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
 namespace MiniTwitter.Models
 {
@@ -14,7 +13,7 @@ namespace MiniTwitter.Models
         public required string Content { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public required int UserId { get; set; }
+        public required string UserId { get; set; }
         public int? ParentTweetId { get; set; }
         public int LikesCount { get; set; } = 0;
     }

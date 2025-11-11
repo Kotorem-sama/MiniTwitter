@@ -1,4 +1,13 @@
-﻿@model IEnumerable<MiniTwitter.Models.Tweet>
+﻿@model MiniTwitter.ViewModels.TweetsPageViewModel
+
+<h2>Tweet what's on your mind</h2>
+<form asp-action="Create" method="post">
+    <div>
+        <label asp-for="NewTweet.Content">Content</label>
+        <textarea asp-for="NewTweet.Content" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 <h2>All Tweets</h2>
 <div class=tweet-container>
@@ -13,7 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var tweet in Model)
+            @foreach (Tweet tweet in Model.AllTweets)
             {
                 <tr>
                     <td>@tweet.Content</td>
