@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using MiniTwitter.Data;
+using MiniTwitter.Models.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<MiniTwitter.Data.ApplicationDbContext>();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<MiniTwitter.Models.Classes.User, IdentityRole>(options =>
+builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = false;
@@ -17,7 +21,7 @@ builder.Services.AddIdentity<MiniTwitter.Models.Classes.User, IdentityRole>(opti
     options.SignIn.RequireConfirmedPhoneNumber = false;
     options.SignIn.RequireConfirmedAccount = false;
 
-}).AddEntityFrameworkStores<MiniTwitter.Data.ApplicationDbContext>()
+}).AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
 var app = builder.Build();
@@ -31,6 +35,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

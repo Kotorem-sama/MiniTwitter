@@ -12,8 +12,8 @@ using MiniTwitter.Data;
 namespace MiniTwitter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251110145919_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251110201133_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -168,6 +168,9 @@ namespace MiniTwitter.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
