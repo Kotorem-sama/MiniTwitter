@@ -15,5 +15,7 @@ namespace MiniTwitter.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public required int UserId { get; set; }
+        public int? ParentTweetId { get; set; }
+        public int LikesCount { get; set; } = 0;
     }
 }

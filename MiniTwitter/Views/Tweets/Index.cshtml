@@ -8,6 +8,8 @@
                 <th>Content</th>
                 <th>Created At</th>
                 <th>User</th>
+                <th>Reply</th>
+                <th>Likes</th>
             </tr>
         </thead>
         <tbody>
@@ -17,6 +19,8 @@
                     <td>@tweet.Content</td>
                     <td>@tweet.CreatedAt.ToString()</td>
                     <td>@tweet.UserId.ToString()</td>
+                    <td>@tweet.ParentTweetId.ToString()</td>
+                    <td>@tweet.LikesCount.ToString()</td>
                 </tr>
             }
         </tbody>

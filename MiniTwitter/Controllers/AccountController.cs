@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MiniTwitter.Models.Classes;
 using MiniTwitter.ViewModels;
 
@@ -26,16 +27,16 @@ namespace MiniTwitter.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-
-                if (result.Succeeded)
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user != null)
                 {
-                    return RedirectToAction("Index", "Home");
+                    var result = await signInManager.PasswordSignInAsync(user.UserName!, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                }
+                ModelState.AddModelError("", "Invalid email or password.");
             }
             return View(model);
         }
@@ -50,9 +51,19 @@ namespace MiniTwitter.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Check of DisplayName al in gebruik is
+                var existingDisplayName = await userManager.Users
+                    .AnyAsync(u => u.DisplayName == model.UserName);
+
+                if (existingDisplayName)
+                {
+                    ModelState.AddModelError("UserName", "This display name is already taken.");
+                    return View(model);
+                }
+
                 User user = new()
                 {
-                    UserName = model.Email,
+                    UserName = model.UserName,
                     Email = model.Email,
                     DisplayName = model.UserName
                 };
