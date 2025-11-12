@@ -7,6 +7,9 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index" asp-route-username="@(User.Identity!.Name)">Profile (@(User.Identity!.Name))</a>
+        </li>
     }
     else
     {
