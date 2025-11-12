@@ -31,6 +31,11 @@ public class HomeController : Controller
         return View(model);
     }
 
+    public IActionResult Create()
+    {
+        return RedirectToAction("Index");
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(TweetsPageViewModel model)
@@ -67,11 +72,6 @@ public class HomeController : Controller
         await _context.SaveChangesAsync();
         
         return RedirectToAction("Index");
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
