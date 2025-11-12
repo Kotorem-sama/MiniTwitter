@@ -4,14 +4,12 @@ body {
     color: #14171a;
 }
 
-/* De container die alles bevat */
 .text-center {
     max-width: 700px;
     margin: 0 auto;
     padding: 20px;
 }
 
-/* Tweet form (bovenaan de pagina) */
 .post-tweet-form {
     background-color: #ffffff;
     border: 1px solid #e1e8ed;
@@ -24,7 +22,7 @@ body {
 .post-tweet-form h2 {
     font-size: 1.3rem;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .post-tweet-form textarea {
@@ -33,18 +31,17 @@ body {
     resize: none;
     font-size: 1rem;
     min-height: 80px;
-    outline: none;
     padding: 8px;
     background-color: #f7f9fa;
     border-radius: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .post-tweet-form button {
     background-color: #1d9bf0;
     color: white;
     border: none;
-    border-radius: 9999px;
+    border-radius: 100px;
     padding: 8px 18px;
     font-weight: 600;
     cursor: pointer;
@@ -62,6 +59,8 @@ body {
 }
 
 .tweet-item {
+    display: grid;
+    text-align: left;
     background-color: #ffffff;
     border: 1px solid #e1e8ed;
     border-radius: 12px;
@@ -70,9 +69,54 @@ body {
     transition: box-shadow 0.2s, transform 0.1s;
 }
 
+.tweet-profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.remove-button {
+    background: none;
+    border: none;
+    color: #e0245e;
+    font-size: 0.8em;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s;
+    margin-bottom: 15px;
+}
+
+.tweet-content {
+    background-color: #fcfcfc;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.tweet-bottom {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #555;
+}
+
 .tweet-item:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     transform: translateY(-2px);
+}
+
+.pagination-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination-controls p {
+    text-align: center;
+    font-weight: 600;
+    margin-top: 20px;
 }
 
 .like-btn {

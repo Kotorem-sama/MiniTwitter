@@ -21,15 +21,17 @@ public class HomeController : Controller
         _userManager = userManager;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(int page = 1, int pageSize = 10)
     {
-        List<Tweet> Tweets = [.. _context.Tweets.OrderByDescending(t => t.CreatedAt)];
+        List<Tweet> Tweets = _context.Tweets.OrderByDescending(t => t.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        
         foreach (var i in Tweets)
         {
             User? user = _context.Users.FirstOrDefault(u => u.Id == i.UserId);
             i.UserId = user?.DisplayName ?? "Unknown user";
-
-            var timeSinceCreation = DateTime.Now - i.CreatedAt;
         }
 
         TweetsPageViewModel model = new()
@@ -37,6 +39,10 @@ public class HomeController : Controller
             AllTweets = Tweets,
             NewTweet = new Tweet { Content = "", UserId = "" }
         };
+
+        ViewBag.CurrentPage = page;
+        ViewBag.HasMorePages = _context.Tweets.Count() > page * pageSize;
+        ViewBag.TotalPages = _context.Tweets.Count() / pageSize + (_context.Tweets.Count() % pageSize > 0 ? 1 : 0);
 
         return View(model);
     }
@@ -80,7 +86,20 @@ public class HomeController : Controller
 
         _context.Tweets.Add(tweet);
         await _context.SaveChangesAsync();
-        
+
+        return RedirectToAction("Index");
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Remove(int tweetId)
+    {
+        var tweet = await _context.Tweets.FindAsync(tweetId);
+        if (tweet != null)
+        {
+            _context.Tweets.Remove(tweet);
+            await _context.SaveChangesAsync();
+        }
         return RedirectToAction("Index");
     }
 

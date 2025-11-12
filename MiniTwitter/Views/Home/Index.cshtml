@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.ComponentModel
 @{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
@@ -27,11 +28,49 @@
     @foreach (Tweet tweet in Model.AllTweets)
     {
         <div class="tweet-item">
-            <p><strong>@@@tweet.UserId</strong></p>
-            <p>@tweet.Content</p>
-            <p class="meta">Tweeted <i>@tweet.TimeSinceCreation</i></p>
-            <p>Likes: <i>@tweet.LikesCount.ToString()</i></p>
+            <div class="tweet-profile">
+                @if ((User.Identity?.Name ?? "Anonymous") == tweet.UserId){
+                    <p><strong>@@@tweet.UserId</strong> <i>(You)</i>:</p>
+
+                    <form asp-action="Remove" method="post" style="display:inline;">
+                        <input type="hidden" name="tweetId" value="@tweet.TweetId" />
+                        <button type="submit" class="remove-button">Remove</button>
+                    </form>
+                }
+                else {
+                    <p><strong>@@@tweet.UserId</strong>:</p>
+                }
+            </div>
+            <p class="tweet-content">@tweet.Content</p>
+            <div class="tweet-bottom">
+                <p><i>Tweeted @tweet.TimeSinceCreation</i></p>
+                <p>Likes: <i>@tweet.LikesCount.ToString()</i></p>
+            </div>
         </div>
     }
+    </div>
+
+    <div class="pagination-controls">
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <form asp-action="Index" method="get">
+                <input type="hidden" name="page" value="@(ViewBag.CurrentPage - 1)" />
+                <button type="submit" class="btn btn-outline-secondary mt-3">Previous Page</button>
+            </form>
+        }
+        else {
+            <p></p>
+        }
+        @if (ViewBag.HasMorePages)
+        {
+            <form asp-action="Index" method="get">
+                <input type="hidden" name="page" value="@(ViewBag.CurrentPage + 1)" />
+                <button type="submit" class="btn btn-outline-primary mt-3">Next Page</button>
+            </form>
+        }
+        else {
+            <p></p>
+        }
+        <p>Page: @ViewBag.CurrentPage / @ViewBag.TotalPages</p>
     </div>
 </div>
