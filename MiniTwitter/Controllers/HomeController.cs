@@ -23,11 +23,21 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        List<Tweet> Tweets = [.. _context.Tweets.OrderByDescending(t => t.CreatedAt)];
+        foreach (var i in Tweets)
+        {
+            User? user = _context.Users.FirstOrDefault(u => u.Id == i.UserId);
+            i.UserId = user?.DisplayName ?? "Unknown user";
+
+            var timeSinceCreation = DateTime.Now - i.CreatedAt;
+        }
+
         TweetsPageViewModel model = new()
         {
-            AllTweets = [.. _context.Tweets.OrderByDescending(t => t.CreatedAt)],
+            AllTweets = Tweets,
             NewTweet = new Tweet { Content = "", UserId = "" }
         };
+
         return View(model);
     }
 

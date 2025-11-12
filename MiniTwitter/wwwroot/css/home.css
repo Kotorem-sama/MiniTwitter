@@ -1,0 +1,86 @@
+body {
+    background-color: #f5f8fa;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #14171a;
+}
+
+/* De container die alles bevat */
+.text-center {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Tweet form (bovenaan de pagina) */
+.post-tweet-form {
+    background-color: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.post-tweet-form h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.post-tweet-form textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    font-size: 1rem;
+    min-height: 80px;
+    outline: none;
+    padding: 8px;
+    background-color: #f7f9fa;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.post-tweet-form button {
+    background-color: #1d9bf0;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    padding: 8px 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.post-tweet-form button:hover {
+    background-color: #1a8cd8;
+}
+
+.tweet-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tweet-item {
+    background-color: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s, transform 0.1s;
+}
+
+.tweet-item:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.like-btn {
+    color: #1d9bf0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.like-btn:hover {
+    color: #0c7abf;
+}

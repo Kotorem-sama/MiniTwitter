@@ -51,7 +51,6 @@ namespace MiniTwitter.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Check of DisplayName al in gebruik is
                 var existingDisplayName = await userManager.Users
                     .AnyAsync(u => u.DisplayName == model.UserName);
 

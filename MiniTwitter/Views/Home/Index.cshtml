@@ -1,49 +1,37 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
 
 @model MiniTwitter.ViewModels.TweetsPageViewModel
-
-@if (User.Identity?.IsAuthenticated == false){
-    <div class="alert alert-warning" role="alert">
-        You must be logged in to post tweets.
+<div class="text-center">
+    <div class="post-tweet-form">
+        @if (User.Identity?.IsAuthenticated == false){
+            <div class="alert alert-warning" role="alert">
+                You must be logged in to post tweets.
+            </div>
+        }
+        else {
+            <h2>What is on your mind?</h2>
+            <form asp-action="Create" method="post">
+                <div>
+                    <textarea asp-for="NewTweet.Content" class="form-control"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        }
     </div>
-}
-else {
-    <h2>Tweet what's on your mind</h2>
-    <form asp-action="Create" method="post">
-        <div>
-            <label asp-for="NewTweet.Content">Content</label>
-            <textarea asp-for="NewTweet.Content" class="form-control"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-}
 
-<h2>All Tweets</h2>
-<div class=tweet-container>
-    <table class="table table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th>Content</th>
-                <th>Created At</th>
-                <th>User</th>
-                <th>Reply</th>
-                <th>Likes</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Tweet tweet in Model.AllTweets)
-            {
-                <tr>
-                    <td>@tweet.Content</td>
-                    <td>@tweet.CreatedAt.ToString()</td>
-                    <td>@tweet.UserId.ToString()</td>
-                    <td>@tweet.ParentTweetId.ToString()</td>
-                    <td>@tweet.LikesCount.ToString()</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class=tweet-container>
+    @foreach (Tweet tweet in Model.AllTweets)
+    {
+        <div class="tweet-item">
+            <p><strong>@@@tweet.UserId</strong></p>
+            <p>@tweet.Content</p>
+            <p class="meta">Tweeted <i>@tweet.TimeSinceCreation</i></p>
+            <p>Likes: <i>@tweet.LikesCount.ToString()</i></p>
+        </div>
+    }
+    </div>
 </div>
