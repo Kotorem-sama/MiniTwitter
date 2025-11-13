@@ -61,7 +61,7 @@
         else {
             <p></p>
         }
-        @if (ViewBag.HasMorePages)
+        @if (ViewBag.HasMorePages != null && ViewBag.HasMorePages)
         {
             <form asp-action="Index" method="get">
                 <input type="hidden" name="page" value="@(ViewBag.CurrentPage + 1)" />
