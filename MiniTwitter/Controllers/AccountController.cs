@@ -16,7 +16,7 @@ namespace MiniTwitter.Controllers
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
-            this._logger = logger;
+            _logger = logger;
         }
 
         public ActionResult Login()
@@ -27,7 +27,10 @@ namespace MiniTwitter.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            try
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
                 if (user != null)
@@ -43,7 +46,12 @@ namespace MiniTwitter.Controllers
                     _logger.LogInformation($"Failed login attempt for user: {user.UserName}");
                 }
                 ModelState.AddModelError("", "Invalid email or password.");
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during login.");
+                ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
             }
+            
             return View(model);
         }
 
@@ -55,7 +63,10 @@ namespace MiniTwitter.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            try
             {
                 var existingDisplayName = await userManager.Users
                     .AnyAsync(u => u.DisplayName == model.UserName);
@@ -80,23 +91,34 @@ namespace MiniTwitter.Controllers
                     _logger.LogInformation($"User {user.UserName} registered successfully.");
                     return RedirectToAction("Login", "Account");
                 }
-                else
+
+                foreach (var error in result.Errors)
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        _logger.LogWarning($"CreateAsync error for user {user.UserName}: {error.Code} - {error.Description}");
-                        ModelState.AddModelError("", error.Description);
-                    }
-                    return View(model);
+                    _logger.LogWarning($"CreateAsync error for user {user.UserName}: {error.Code} - {error.Description}");
+                    ModelState.AddModelError("", error.Description);
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during registration.");
+                ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
             }
             return View(model);
         }
         
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            try
+            {
+                await signInManager.SignOutAsync();
+                _logger.LogInformation("User logged out.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during logout.");
+                TempData["ErrorMessage"] = "Unable to log out at the moment. Please try again.";
+            }
+
             return RedirectToAction("Index", "Home");
         }
     }
