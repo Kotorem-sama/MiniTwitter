@@ -1,0 +1,34 @@
+﻿@model MiniTwitter.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = Model.DisplayName + " - Profile";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<h1>@Model.DisplayName</h1>
+
+<div class=tweet-container>
+    @foreach (Tweet tweet in Model.Tweets)
+    {
+        <div class="tweet-item">
+            <div class="tweet-profile">
+                @if ((User.Identity?.Name ?? "Anonymous") == tweet.UserId){
+                    <p><strong>@@@tweet.UserId</strong> <i>(You)</i>:</p>
+
+                    <form asp-action="Remove" method="post" style="display:inline;">
+                        <input type="hidden" name="tweetId" value="@tweet.TweetId" />
+                        <button type="submit" class="remove-button">Remove</button>
+                    </form>
+                }
+                else {
+                    <p><strong>@@@Model.DisplayName</strong>:</p>
+                }
+            </div>
+            <p class="tweet-content">@tweet.Content</p>
+            <div class="tweet-bottom">
+                <p><i>Tweeted @tweet.TimeSinceCreation</i></p>
+                <p>Likes: <i>@tweet.LikesCount.ToString()</i></p>
+            </div>
+        </div>
+    }
+    </div>

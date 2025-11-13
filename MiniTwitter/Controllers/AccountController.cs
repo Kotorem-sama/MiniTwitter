@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MiniTwitter.Data;
 using MiniTwitter.Models.Classes;
 using MiniTwitter.ViewModels;
 
@@ -11,12 +13,15 @@ namespace MiniTwitter.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
         private readonly ILogger<AccountController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, ILogger<AccountController> logger)
+        public AccountController(SignInManager<User> signInManager,
+            UserManager<User> userManager, ILogger<AccountController> logger, ApplicationDbContext context)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             _logger = logger;
+            _context = context;
         }
 
         public ActionResult Login()
@@ -120,6 +125,35 @@ namespace MiniTwitter.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Profile(string username)
+        {
+            try
+            {
+                var user = await userManager.Users.FirstOrDefaultAsync(u => u.DisplayName == username);
+
+                if (user == null)
+                {
+                    _logger.LogInformation($"Profile not found for username: {username}");
+                    return NotFound($"User '{username}' not found.");
+                }
+
+                ProfileViewModel model = new()
+                {
+                  DisplayName = username,
+                  Tweets = await _context.Tweets.OrderByDescending(
+                    t => t.CreatedAt).Where(t => t.UserId == user.Id).ToListAsync()
+                };
+                return View(model);
+
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error while loading profile for username '{username}'.");
+                return NotFound($"Error while loading profile for username '{username}'.");
+            }
+            return View();
         }
     }
 }
