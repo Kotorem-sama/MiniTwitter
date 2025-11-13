@@ -41,7 +41,7 @@ public class HomeController : Controller
         }
 
         ViewBag.HasMorePages = totalTweets > page * pageSize;
-        ViewBag.TotalPages = totalTweets / pageSize + (totalTweets % pageSize > 0 ? 1 : 0);
+        ViewBag.TotalPages = totalTweets / pageSize + (totalTweets % pageSize > 0 || totalTweets == 0 ? 1 : 0);
     }
 
     public async Task<TweetsPageViewModel> getTweetsAsync(TweetsPageViewModel model, int page = 1, int pageSize = 10)
